@@ -3,7 +3,7 @@
 # Run `pod lib lint media_kit_libs_ios_video.podspec` to validate before publishing.
 #
 Pod::Spec.new do |s|
-  system("cd \"#{__dir__}\" && make") || abort("Make failed!")
+  system("make")
 
   s.name             = 'media_kit_libs_ios_video'
   s.version          = '1.1.5'
@@ -22,16 +22,7 @@ Pod::Spec.new do |s|
     'media_kit_libs_ios_video_privacy' => ['media_kit_libs_ios_video/Sources/media_kit_libs_ios_video/PrivacyInfo.xcprivacy']
   }
 
-  s.vendored_frameworks = [
-    'Frameworks/Mpv.xcframework',
-    'Frameworks/Ass.xcframework',
-    'Frameworks/Avcodec.xcframework',
-    'Frameworks/Swscale.xcframework',
-    'Frameworks/Avutil.xcframework',
-    'Frameworks/Xml2.xcframework',
-    'Frameworks/Mbedx509.xcframework'
-  ]
-  s.static_framework = true
+  s.vendored_frameworks = 'Frameworks/*.xcframework'
 
   s.platform = :ios, '9.0'
   s.pod_target_xcconfig = {
