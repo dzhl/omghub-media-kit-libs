@@ -8,14 +8,16 @@ Pod::Spec.new do |s|
   puts "[media_kit_libs_ios_video] __dir__ = #{__dir__}"
   puts "[media_kit_libs_ios_video] 执行 make ..."
   make_start = Time.now
-  make_ok = system("cd \"#{__dir__}\" && make")
+  # 确保 __dir__ 不含 CRLF 残留字符
+  clean_dir = File.expand_path(__dir__).gsub(/\r/, '')
+  make_ok = system("cd \"#{clean_dir}\" && make")
   make_elapsed = (Time.now - make_start).round(1)
   puts "[media_kit_libs_ios_video] make 耗时 #{make_elapsed}s，退出码: #{make_ok ? 0 : $?.exitstatus}"
 
-  frameworks = Dir.glob(File.join(__dir__, 'Frameworks', '*.xcframework')).map { |f| File.basename(f) }
+  frameworks = Dir.glob(File.join(clean_dir, 'Frameworks', '*.xcframework')).map { |f| File.basename(f) }
   puts "[media_kit_libs_ios_video] Frameworks/ 内的 xcframeworks (#{frameworks.size} 个): #{frameworks.join(', ')}"
 
-  symlink_ios = File.join(__dir__, 'Frameworks', '.symlinks', 'mpv', 'ios')
+  symlink_ios = File.join(clean_dir, 'Frameworks', '.symlinks', 'mpv', 'ios')
   puts "[media_kit_libs_ios_video] .symlinks/mpv/ios 存在: #{File.exist?(symlink_ios) || Dir.exist?(symlink_ios)}"
 
   abort("[media_kit_libs_ios_video] ✗ make 失败，构建中止") unless make_ok
