@@ -4,8 +4,11 @@
 #
 Pod::Spec.new do |s|
   system("cd \"#{__dir__}\" && make") || abort("Make failed!")
-  system("cd \"#{__dir__}\" && echo '=== MAKE FINISHED ===' && ls -la Frameworks/")
-  system("cd \"#{__dir__}\" && echo '=== GLOB RESULT ===' && ruby -e \"puts Dir.glob('Frameworks/*.xcframework')\"")
+  frameworks = Dir.glob('Frameworks/*.xcframework')
+  if frameworks.empty?
+    dir_content = `cd \"#{__dir__}\" && ls -la Frameworks/`
+    abort("=== 终极大雷达 ===\nGlob 抓取为空！\n当前 Frameworks 目录的实际内容是:\n#{dir_content}\n==================")
+  end
   s.name             = 'media_kit_libs_ios_video'
   s.version          = '1.1.5'
   s.summary          = 'iOS dependency package for package:media_kit'
