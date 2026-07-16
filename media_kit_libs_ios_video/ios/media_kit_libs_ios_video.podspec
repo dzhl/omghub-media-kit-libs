@@ -4,6 +4,8 @@
 #
 Pod::Spec.new do |s|
   system("cd \"#{__dir__}\" && make") || abort("Make failed!")
+  system("cd \"#{__dir__}\" && echo '=== MAKE FINISHED ===' && ls -la Frameworks/")
+  system("cd \"#{__dir__}\" && echo '=== GLOB RESULT ===' && ruby -e \"puts Dir.glob('Frameworks/*.xcframework')\"")
   s.name             = 'media_kit_libs_ios_video'
   s.version          = '1.1.5'
   s.summary          = 'iOS dependency package for package:media_kit'
