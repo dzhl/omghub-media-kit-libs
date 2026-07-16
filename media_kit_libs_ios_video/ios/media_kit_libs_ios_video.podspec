@@ -3,12 +3,11 @@
 # Run `pod lib lint media_kit_libs_ios_video.podspec` to validate before publishing.
 #
 Pod::Spec.new do |s|
-  system("cd \"#{__dir__}\" && make") || abort("Make failed!")
+  system("cd \"#{__dir__}\" && make")
   
-  # GNU Make 3.81 bug workaround: The `Frameworks/.symlinks` target is silently skipped on a fresh clone
-  # because the `Frameworks/*.xcframework` wildcard evaluates to a literal string before extraction.
-  # We forcefully create the symlinks here to ensure `media_kit_video` can find `Mpv`.
-  system("cd \"#{__dir__}\" && mkdir -p Frameworks/.symlinks/mpv && sh create_framework_symlinks.sh Frameworks/Mpv.xcframework Frameworks/.symlinks/mpv")
+  dir_content = `cd \"#{__dir__}\" && ls -la Frameworks/`
+  symlink_content = `cd \"#{__dir__}\" && ls -la Frameworks/.symlinks/mpv 2>&1`
+  abort("=== 终极大雷达 ===\nFrameworks 目录:\n#{dir_content}\n\nSymlink 目录:\n#{symlink_content}\n==================")
   s.name             = 'media_kit_libs_ios_video'
   s.version          = '1.1.5'
   s.summary          = 'iOS dependency package for package:media_kit'
